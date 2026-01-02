@@ -1,13 +1,13 @@
 services:
   smtp:
-    image: ixdotai/smtp:v0.7.6
+    image: ixdotai/smtp:v0.7.6@sha256:2de999bee1fecf58ff5783fd51b92ef74ed3e0ca6c493bd5547b7ceff5ca6099
     container_name: smtp
     ports:
       - 127.0.0.1:25:25
     env_file:
       - ./environments/smtp.env
   postgres:
-    image: postgres:17
+    image: postgres:17@sha256:bac8128cd62a35471a1e97966861aa2ac88c8d2f408767a425ae70695a607c99
     container_name: postgres
     restart: always
     environment:
@@ -19,7 +19,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
   loki:
-    image: grafana/loki:3.4.3
+    image: grafana/loki:3.4.3@sha256:5fe9fa99e9a747297cdf0239a5b25d192d8f668bd6505b09beef4dffcab5aac2
     container_name: loki
     command:
       [
@@ -32,7 +32,7 @@ services:
     ports:
       - "3100:3100"
   prometheus:
-    image: prom/prometheus:v3.2.1
+    image: prom/prometheus:v3.2.1@sha256:6927e0919a144aa7616fd0137d4816816d42f6b816de3af269ab065250859a62
     container_name: prometheus
     volumes:
       - ./prometheus/:/etc/prometheus/
@@ -42,7 +42,7 @@ services:
     ports:
       - "9090:9090"
   alertmanager:
-    image: prom/alertmanager:v0.28.1
+    image: prom/alertmanager:v0.28.1@sha256:27c475db5fb156cab31d5c18a4251ac7ed567746a2483ff264516437a39b15ba
     container_name: alertmanager
     volumes:
       - ./alertmanager:/etc/alertmanager/
