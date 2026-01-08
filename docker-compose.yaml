@@ -1,13 +1,13 @@
 services:
   smtp:
-    image: ixdotai/smtp:v0.7.6
+    image: ixdotai/smtp:v0.7.7@sha256:4f5f64a386ef8e024b60a45f9cac171f6229dd65eaad1d772337a1db64ba7f3d
     container_name: smtp
     ports:
       - 127.0.0.1:25:25
     env_file:
       - ./environments/smtp.env
   postgres:
-    image: postgres:17
+    image: postgres:18@sha256:38d5c9d522037d8bf0864c9068e4df2f8a60127c6489ab06f98fdeda535560f9
     container_name: postgres
     restart: always
     environment:
@@ -19,7 +19,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
   loki:
-    image: grafana/loki:3.4.3
+    image: grafana/loki:3.6.3@sha256:cd6e176883a90c21755f0315688668991634143423f75bdedfef41441b0fdc3c
     container_name: loki
     command:
       [
@@ -32,7 +32,7 @@ services:
     ports:
       - "3100:3100"
   prometheus:
-    image: prom/prometheus:v3.2.1
+    image: prom/prometheus:v3.8.1@sha256:2b6f734e372c1b4717008f7d0a0152316aedd4d13ae17ef1e3268dbfaf68041b
     container_name: prometheus
     volumes:
       - ./prometheus/:/etc/prometheus/
@@ -42,14 +42,14 @@ services:
     ports:
       - "9090:9090"
   alertmanager:
-    image: prom/alertmanager:v0.28.1
+    image: prom/alertmanager:v0.30.0@sha256:abb750ac7b63116761c16dd481ae92496fbe04721686c0920f0fa4d0728cd4a6
     container_name: alertmanager
     volumes:
       - ./alertmanager:/etc/alertmanager/
     ports:
       - 9093:9093
   grafana:
-    image: grafana/grafana:${GRAFANA_VERSION:-12.2.0}
+    image: grafana/grafana:${GRAFANA_VERSION:-12.3.1}
     #image: grafana/grafana-oss:main
     container_name: grafana
     environment:
@@ -59,7 +59,7 @@ services:
       - GF_SMTP_ENABLED=true
       - GF_SMTP_HOST=smtp:25
       - GF_SMTP_SKIP_VERIFY=true
-      - GF_FEATURE_TOGGLES_ENABLE=alertingCentralAlertHistory,sqlExpressions,alertingMigrationUI,grafanaManagedRecordingRules
+      - GF_FEATURE_TOGGLES_ENABLE=alertingCentralAlertHistory,sqlExpressions,alertingMigrationUI,alertingImportYAMLUI,grafanaManagedRecordingRules
     volumes:
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
       - ./grafana/alerting:/etc/grafana/provisioning/alerting
