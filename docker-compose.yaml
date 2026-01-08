@@ -49,7 +49,7 @@ services:
     ports:
       - 9093:9093
   grafana:
-    image: grafana/grafana:${GRAFANA_VERSION:-12.2.0}
+    image: grafana/grafana:${GRAFANA_VERSION:-12.3.1}
     #image: grafana/grafana-oss:main
     container_name: grafana
     environment:
@@ -59,7 +59,7 @@ services:
       - GF_SMTP_ENABLED=true
       - GF_SMTP_HOST=smtp:25
       - GF_SMTP_SKIP_VERIFY=true
-      - GF_FEATURE_TOGGLES_ENABLE=alertingCentralAlertHistory,sqlExpressions,alertingMigrationUI,grafanaManagedRecordingRules
+      - GF_FEATURE_TOGGLES_ENABLE=alertingCentralAlertHistory,sqlExpressions,alertingMigrationUI,alertingImportYAMLUI,grafanaManagedRecordingRules
     volumes:
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
       - ./grafana/alerting:/etc/grafana/provisioning/alerting
