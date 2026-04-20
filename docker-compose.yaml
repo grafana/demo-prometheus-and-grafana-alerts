@@ -32,7 +32,7 @@ services:
     ports:
       - "3100:3100"
   prometheus:
-    image: prom/prometheus:v3.8.1@sha256:2b6f734e372c1b4717008f7d0a0152316aedd4d13ae17ef1e3268dbfaf68041b
+    image: prom/prometheus:v3.11.2@sha256:5550dc63da361dc30f6fe02ac0e4dfc736ededfef3c8d12a634db04a67824d78
     container_name: prometheus
     volumes:
       - ./prometheus/:/etc/prometheus/
