@@ -42,7 +42,7 @@ services:
     ports:
       - "9090:9090"
   alertmanager:
-    image: prom/alertmanager:v0.30.0@sha256:abb750ac7b63116761c16dd481ae92496fbe04721686c0920f0fa4d0728cd4a6
+    image: prom/alertmanager:v0.32.0@sha256:58e117eabccebbff04e6643a3432d6315a2cc3a8c24ab5849bc628886bf08857
     container_name: alertmanager
     volumes:
       - ./alertmanager:/etc/alertmanager/
