@@ -19,7 +19,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
   loki:
-    image: grafana/loki:3.7.1@sha256:73e905b51a7f917f7a1075e4be68759df30226e03dcb3cd2213b989cc0dc8eb4
+    image: grafana/loki:3.7.7@sha256:d70e4659623f3e109af669cae76fe2a5dd5be54e2298fe8aed380d982fbc2500
     container_name: loki
     command:
       [
