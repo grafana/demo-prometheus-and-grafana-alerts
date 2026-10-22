@@ -17,9 +17,9 @@ services:
     ports:
       - "5488:5432"
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql
   loki:
-    image: grafana/loki:3.7.1@sha256:73e905b51a7f917f7a1075e4be68759df30226e03dcb3cd2213b989cc0dc8eb4
+    image: grafana/loki:3.7.9@sha256:0db216b630ae1f348a1584c67f3cead8b4c1fc839169a39501db664744158e28
     container_name: loki
     command:
       [
@@ -32,7 +32,7 @@ services:
     ports:
       - "3100:3100"
   prometheus:
-    image: prom/prometheus:v3.15.0@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e
+    image: prom/prometheus:v3.15.1@sha256:fa3302279710be2f21a8301ec17a8b4f2301fd829bd113839b3b6b02b6f191a2
     container_name: prometheus
     volumes:
       - ./prometheus/:/etc/prometheus/
@@ -49,7 +49,7 @@ services:
     ports:
       - 9093:9093
   grafana:
-    image: grafana/grafana:${GRAFANA_VERSION:-12.3.1}
+    image: grafana/grafana:${GRAFANA_VERSION:-13.2.4}
     #image: grafana/grafana-oss:main
     container_name: grafana
     environment:
@@ -59,11 +59,13 @@ services:
       - GF_SMTP_ENABLED=true
       - GF_SMTP_HOST=smtp:25
       - GF_SMTP_SKIP_VERIFY=true
-      - GF_FEATURE_TOGGLES_ENABLE=alertingCentralAlertHistory,sqlExpressions,alertingMigrationUI,alertingImportYAMLUI,grafanaManagedRecordingRules
+      - GF_PLUGINS_PREINSTALL_SYNC=grafana-prometheusalerting-app
+      - GF_FEATURE_TOGGLES_grafanaManagedRecordingRules=true
     volumes:
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
       - ./grafana/alerting:/etc/grafana/provisioning/alerting
       - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/plugins:/etc/grafana/provisioning/plugins
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     ports:
       - 3000:3000

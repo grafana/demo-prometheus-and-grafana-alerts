@@ -1,0 +1,6 @@
+{{ define "custom.severity_summary" -}}
+  [{{ .Status | toUpper }}] {{ .CommonLabels.alertname }} ({{ .CommonLabels.severity }})
+  {{ range .Alerts -}}
+    - {{ .Labels.instance }}: {{ .Annotations.summary }}
+  {{ end -}}
+{{ end -}}
