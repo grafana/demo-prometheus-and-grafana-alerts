@@ -1,0 +1,45 @@
+# Rules that exercise the Alertmanager child routes and the inhibition rule.
+# Use testdata/1.cpu-usage.js to generate the cpu_usage metric.
+groups:
+  - name: routing
+    interval: 10s
+    rules:
+      - alert: CPUUsageHigh
+        expr: cpu_usage > 70
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU usage above 70%"
+      - alert: CPUUsageHigh
+        expr: cpu_usage > 90
+        labels:
+          severity: critical
+        annotations:
+          summary: "CPU usage above 90%"
+
+  # Always firing, so the demo shows alerts without running the k6 tests.
+  # DemoAlwaysFiring (warning) is inhibited by DemoAlwaysFiring (critical).
+  - name: always-firing
+    interval: 10s
+    rules:
+      - alert: DemoAlwaysFiring
+        expr: vector(1)
+        labels:
+          severity: critical
+          instance: demo-host
+        annotations:
+          summary: "Demo critical alert that always fires"
+      - alert: DemoAlwaysFiring
+        expr: vector(1)
+        labels:
+          severity: warning
+          instance: demo-host
+        annotations:
+          summary: "Demo warning alert, inhibited by the critical one"
+      - alert: DemoAlwaysFiringWarning
+        expr: vector(1)
+        labels:
+          severity: warning
+          instance: demo-host
+        annotations:
+          summary: "Demo warning alert that always fires and is not inhibited"

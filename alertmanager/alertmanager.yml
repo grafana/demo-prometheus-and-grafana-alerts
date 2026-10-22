@@ -6,7 +6,8 @@ global:
   smtp_auth_identity: your_mail@gmail.com
 
 templates:
-- '/etc/alertmanager/templates/*.tmpl'
+  - '/etc/alertmanager/templates/custom-summary.tmpl'
+  - '/etc/alertmanager/templates/severity-summary.tmpl'
 
 route:
   receiver: "team-X-mail"
@@ -14,6 +15,39 @@ route:
   group_wait: 10s
   group_interval: 30s
   repeat_interval: 1h
+  routes:
+    # Critical alerts: shorter repeat interval, sent to the webhook receiver.
+    - receiver: "team-X-webhook"
+      matchers:
+        - severity="critical"
+      group_by: [alertname, instance]
+      repeat_interval: 30m
+    # Warning alerts: sent by mail, muted outside business hours.
+    - receiver: "team-X-mail"
+      matchers:
+        - severity="warning"
+      mute_time_intervals:
+        - outside-business-hours
+
+# Warning alerts are suppressed while a critical alert with the same
+# alertname and instance is firing.
+inhibit_rules:
+  - source_matchers:
+      - severity="critical"
+    target_matchers:
+      - severity="warning"
+    equal: [alertname, instance]
+
+time_intervals:
+  - name: outside-business-hours
+    time_intervals:
+      - weekdays: ['monday:friday']
+        times:
+          - start_time: '00:00'
+            end_time: '09:00'
+          - start_time: '17:00'
+            end_time: '24:00'
+      - weekdays: ['saturday', 'sunday']
 
 receivers:
   - name: "team-X-webhook"
