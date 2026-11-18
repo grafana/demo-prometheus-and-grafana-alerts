@@ -7,7 +7,7 @@ services:
     env_file:
       - ./environments/smtp.env
   postgres:
-    image: postgres:18@sha256:edb0c08dc33befd0262ab3b5cf1c4f3f8cfd8b09e88c05b45adee29d6761ddb6
+    image: postgres:18@sha256:2ea8630df176ad090ec92136dee850397c5af8781e4bcf2e4162593691c61bbc
     container_name: postgres
     restart: always
     environment:
